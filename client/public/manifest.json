@@ -1,0 +1,46 @@
+{
+    "name": "Become A Skiller",
+    "short_name": "Skiller",
+    "description": "Premium multi-language SaaS learning platform in Tamil & English",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#2563EB",
+    "orientation": "portrait",
+    "icons": [
+        {
+            "src": "/favicon.ico",
+            "sizes": "64x64 32x32 24x24 16x16",
+            "type": "image/x-icon"
+        },
+        {
+            "src": "/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "maskable any"
+        },
+        {
+            "src": "/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png",
+            "purpose": "maskable any"
+        }
+    ],
+    "categories": [
+        "education",
+        "productivity"
+    ],
+    "lang": "en-IN",
+    "shortcuts": [
+        {
+            "name": "My Courses",
+            "url": "/my-courses",
+            "description": "View your enrolled courses"
+        },
+        {
+            "name": "Take a Quiz",
+            "url": "/quizzes",
+            "description": "Test your knowledge"
+        }
+    ]
+}
