@@ -56,6 +56,7 @@ const nextConfig = {
     poweredByHeader: false,
     experimental: {
         optimizeCss: false,
+        turbopack: {},
     },
     compiler: {
         removeConsole: process.env.NODE_ENV === 'production',
