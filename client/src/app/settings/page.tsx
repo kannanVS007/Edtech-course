@@ -117,7 +117,7 @@ export default function SettingsPage() {
                         <p className="text-sm text-muted-foreground mb-4">Select your preferred language</p>
                         <div className="flex gap-2">
                             {[['en', 'English'], ['ta', 'தமிழ்']].map(([code, label]) => (
-                                <button key={code} onClick={() => setLanguage(code)}
+                                <button key={code} onClick={() => setLanguage(code as 'en' | 'ta')}
                                     className={`px-4 py-2 rounded-xl text-sm font-semibold border transition-all ${language === code ? 'bg-primary text-white border-primary shadow-lg shadow-primary/20' : 'border-border hover:border-primary/30 text-muted-foreground'}`}>
                                     {label}
                                 </button>
