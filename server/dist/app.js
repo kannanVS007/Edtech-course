@@ -7,17 +7,17 @@ const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
 const helmet_1 = __importDefault(require("helmet"));
 const morgan_1 = __importDefault(require("morgan"));
-const errorMiddleware_1 = require("@/middleware/errorMiddleware");
-const appError_1 = require("@/utils/appError");
+const errorMiddleware_1 = require("./middleware/errorMiddleware");
+const appError_1 = require("./utils/appError");
 const express_rate_limit_1 = __importDefault(require("express-rate-limit"));
 // Routes
-const authRoutes_1 = __importDefault(require("@/routes/authRoutes"));
-const categoryRoutes_1 = __importDefault(require("@/routes/categoryRoutes"));
-const courseRoutes_1 = __importDefault(require("@/routes/courseRoutes"));
-const moduleRoutes_1 = __importDefault(require("@/routes/moduleRoutes"));
-const quizRoutes_1 = __importDefault(require("@/routes/quizRoutes"));
-const progressRoutes_1 = __importDefault(require("@/routes/progressRoutes"));
-const userRoutes_1 = __importDefault(require("@/routes/userRoutes"));
+const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
+const categoryRoutes_1 = __importDefault(require("./routes/categoryRoutes"));
+const courseRoutes_1 = __importDefault(require("./routes/courseRoutes"));
+const moduleRoutes_1 = __importDefault(require("./routes/moduleRoutes"));
+const quizRoutes_1 = __importDefault(require("./routes/quizRoutes"));
+const progressRoutes_1 = __importDefault(require("./routes/progressRoutes"));
+const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 const app = (0, express_1.default)();
 // Global Middlewares
 app.use((0, helmet_1.default)());

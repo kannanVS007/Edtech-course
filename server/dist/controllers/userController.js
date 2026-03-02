@@ -34,9 +34,9 @@ var __importStar = (this && this.__importStar) || (function () {
 })();
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteUser = exports.updateUserStatus = exports.updateUserRole = exports.getUser = exports.getAllUsers = void 0;
-const userModel_1 = __importStar(require("@/models/userModel"));
-const catchAsync_1 = require("@/utils/catchAsync");
-const appError_1 = require("@/utils/appError");
+const userModel_1 = __importStar(require("../models/userModel"));
+const catchAsync_1 = require("../utils/catchAsync");
+const appError_1 = require("../utils/appError");
 exports.getAllUsers = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const { search, role, status, sort } = req.query;
     let query = {};

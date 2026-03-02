@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteCourse = exports.updateCourse = exports.createCourse = exports.getCourse = exports.getAllCourses = void 0;
-const courseModel_1 = __importDefault(require("@/models/courseModel"));
-const catchAsync_1 = require("@/utils/catchAsync");
-const appError_1 = require("@/utils/appError");
+const courseModel_1 = __importDefault(require("../models/courseModel"));
+const catchAsync_1 = require("../utils/catchAsync");
+const appError_1 = require("../utils/appError");
 exports.getAllCourses = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const courses = await courseModel_1.default.find().populate('category', 'name').lean();
     res.status(200).json({ status: 'success', results: courses.length, data: { courses } });

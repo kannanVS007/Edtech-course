@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteCategory = exports.updateCategory = exports.createCategory = exports.getAllCategories = void 0;
-const categoryModel_1 = __importDefault(require("@/models/categoryModel"));
-const catchAsync_1 = require("@/utils/catchAsync");
-const appError_1 = require("@/utils/appError");
+const categoryModel_1 = __importDefault(require("../models/categoryModel"));
+const catchAsync_1 = require("../utils/catchAsync");
+const appError_1 = require("../utils/appError");
 exports.getAllCategories = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const categories = await categoryModel_1.default.find();
     res.status(200).json({ status: 'success', data: { categories } });

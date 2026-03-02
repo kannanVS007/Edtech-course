@@ -1,60 +1,66 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-@theme {
-  --color-primary: hsl(221 83% 53%);
-  --color-primary-dark: hsl(221 72% 48%);
-  --color-primary-light: hsl(213 94% 68%);
-  --color-secondary: hsl(199 89% 48%);
-  --color-accent: hsl(38 92% 50%);
-
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
-  --color-surface: hsl(var(--surface));
-  --color-surface-dark: hsl(var(--surface-dark));
-  --color-border: hsl(var(--border-color));
-  --color-muted-foreground: hsl(var(--muted));
-
-  --radius-2xl: 1rem;
-  --radius-3xl: 1.5rem;
-  --radius-4xl: 2rem;
-  --radius-5xl: 2.5rem;
-
-  --shadow-premium: 0 10px 30px -5px hsl(var(--foreground) / 0.06), 0 4px 12px -4px hsl(var(--foreground) / 0.04);
-  --shadow-premium-xl: 0 20px 50px -12px hsl(var(--foreground) / 0.12), 0 8px 20px -6px hsl(var(--foreground) / 0.08);
-  --shadow-glow: 0 0 20px -5px var(--color-primary-light);
-}
+/* ============================= */
+/* DESIGN TOKENS */
+/* ============================= */
 
 :root {
+  --color-primary: 221 83% 53%;
+  --color-primary-dark: 221 72% 48%;
+  --color-primary-light: 213 94% 68%;
+  --color-secondary: 199 89% 48%;
+  --color-accent: 38 92% 50%;
+
   --background: 0 0% 100%;
   --foreground: 222 47% 11%;
   --surface: 210 40% 98%;
   --surface-dark: 210 40% 96%;
   --border-color: 214 32% 91%;
   --muted: 215 16% 47%;
+
   --glass-bg: 0 0% 100% / 0.7;
   --glass-border: 0 0% 100% / 0.5;
+
+  --radius-2xl: 1rem;
+  --radius-3xl: 1.5rem;
+  --radius-4xl: 2rem;
+  --radius-5xl: 2.5rem;
+
+  --shadow-premium: 0 10px 30px -5px hsl(var(--foreground) / 0.06),
+    0 4px 12px -4px hsl(var(--foreground) / 0.04);
+
+  --shadow-premium-xl: 0 20px 50px -12px hsl(var(--foreground) / 0.12),
+    0 8px 20px -6px hsl(var(--foreground) / 0.08);
+
+  --shadow-glow: 0 0 20px -5px hsl(var(--color-primary-light));
 }
 
-[class~="dark"] {
+.dark {
   --background: 222 47% 11%;
   --foreground: 210 40% 96%;
   --surface: 217 33% 17%;
   --surface-dark: 222 47% 11%;
   --border-color: 217 19% 27%;
   --muted: 215 20% 65%;
+
   --glass-bg: 222 47% 11% / 0.7;
   --glass-border: 0 0% 100% / 0.1;
 }
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  color: hsl(var(--foreground));
+  background: hsl(var(--background));
   font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
   transition: background-color 0.3s ease, color 0.3s ease;
   -webkit-font-smoothing: antialiased;
 }
 
-/* Premium Typography Utilities */
+/* ============================= */
+/* CUSTOM UTILITIES */
+/* ============================= */
+
 .font-outfit {
   font-family: var(--font-outfit), sans-serif;
 }
@@ -63,12 +69,12 @@ body {
   letter-spacing: -0.02em;
 }
 
-/* Glassmorphism utility */
+/* Glass */
 .glass {
-  background: var(--glass-bg);
+  background: hsl(var(--glass-bg));
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--glass-border);
+  border: 1px solid hsl(var(--glass-border));
 }
 
 .glass-dark {
@@ -78,7 +84,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.05);
 }
 
-/* Gradient text utility */
+/* Gradient */
 .gradient-text {
   background: linear-gradient(135deg, #2563eb 0%, #0ea5e9 100%);
   -webkit-background-clip: text;
@@ -90,7 +96,10 @@ body {
   background: linear-gradient(135deg, #2563eb 0%, #0284c7 100%);
 }
 
-/* Hide scrollbar but keep scroll functionality */
+/* ============================= */
+/* SCROLLBAR */
+/* ============================= */
+
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -100,7 +109,6 @@ body {
   scrollbar-width: none;
 }
 
-/* Custom scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
 }
@@ -110,18 +118,17 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--border-color);
+  background: hsl(var(--border-color));
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--muted);
+  background: hsl(var(--muted));
 }
 
-/* Animation Utilities */
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
+/* ============================= */
+/* ANIMATIONS */
+/* ============================= */
 
 @keyframes float {
 
@@ -133,6 +140,10 @@ body {
   50% {
     transform: translateY(-20px);
   }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
 }
 
 .animate-pulse-slow {

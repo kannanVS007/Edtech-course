@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const progressController_1 = require("@/controllers/progressController");
-const authMiddleware_1 = require("@/middleware/authMiddleware");
+const progressController_1 = require("../controllers/progressController");
+const authMiddleware_1 = require("../middleware/authMiddleware");
 const router = express_1.default.Router();
 router.use(authMiddleware_1.protect);
 router.get('/:courseId', progressController_1.getProgress);

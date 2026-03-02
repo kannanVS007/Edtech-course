@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateProgress = exports.getProgress = void 0;
-const progressModel_1 = __importDefault(require("@/models/progressModel"));
-const catchAsync_1 = require("@/utils/catchAsync");
+const progressModel_1 = __importDefault(require("../models/progressModel"));
+const catchAsync_1 = require("../utils/catchAsync");
 exports.getProgress = (0, catchAsync_1.catchAsync)(async (req, res) => {
     const progress = await progressModel_1.default.findOne({
         user: req.user._id,

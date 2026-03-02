@@ -5,10 +5,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.restrictTo = exports.protect = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
-const env_1 = require("@/config/env");
-const appError_1 = require("@/utils/appError");
-const catchAsync_1 = require("@/utils/catchAsync");
-const userModel_1 = __importDefault(require("@/models/userModel"));
+const env_1 = require("../config/env");
+const appError_1 = require("../utils/appError");
+const catchAsync_1 = require("../utils/catchAsync");
+const userModel_1 = __importDefault(require("../models/userModel"));
 exports.protect = (0, catchAsync_1.catchAsync)(async (req, res, next) => {
     // 1) Getting token and check of it's there
     let token;

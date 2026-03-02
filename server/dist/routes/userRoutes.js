@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const userController_1 = require("@/controllers/userController");
-const authMiddleware_1 = require("@/middleware/authMiddleware");
-const userModel_1 = require("@/models/userModel");
+const userController_1 = require("../controllers/userController");
+const authMiddleware_1 = require("../middleware/authMiddleware");
+const userModel_1 = require("../models/userModel");
 const router = express_1.default.Router();
 // All routes after this are protected and restricted to admin
 router.use(authMiddleware_1.protect);

@@ -4,10 +4,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteModule = exports.updateModule = exports.createModule = void 0;
-const moduleModel_1 = __importDefault(require("@/models/moduleModel"));
-const courseModel_1 = __importDefault(require("@/models/courseModel"));
-const catchAsync_1 = require("@/utils/catchAsync");
-const appError_1 = require("@/utils/appError");
+const moduleModel_1 = __importDefault(require("../models/moduleModel"));
+const courseModel_1 = __importDefault(require("../models/courseModel"));
+const catchAsync_1 = require("../utils/catchAsync");
+const appError_1 = require("../utils/appError");
 exports.createModule = (0, catchAsync_1.catchAsync)(async (req, res, next) => {
     // Check if course exists
     const course = await courseModel_1.default.findById(req.body.course);

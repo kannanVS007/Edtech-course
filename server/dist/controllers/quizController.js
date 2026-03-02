@@ -4,9 +4,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateQuiz = exports.createQuiz = exports.getQuizByCourse = void 0;
-const quizModel_1 = __importDefault(require("@/models/quizModel"));
-const catchAsync_1 = require("@/utils/catchAsync");
-const appError_1 = require("@/utils/appError");
+const quizModel_1 = __importDefault(require("../models/quizModel"));
+const catchAsync_1 = require("../utils/catchAsync");
+const appError_1 = require("../utils/appError");
 exports.getQuizByCourse = (0, catchAsync_1.catchAsync)(async (req, res, next) => {
     const quiz = await quizModel_1.default.findOne({ course: req.params.courseId });
     if (!quiz)
