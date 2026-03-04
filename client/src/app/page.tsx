@@ -241,7 +241,7 @@ export default function LandingPage() {
             initial={{ opacity: 0, scale: 0.9, rotate: 2 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
             transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
-            className="relative hidden lg:block"
+            className="relative lg:-mt-32 mt-12"
           >
             {/* Main Mockup Card */}
             <div className="relative z-10 p-4 bg-background border border-border rounded-5xl shadow-premium-xl glass group overflow-hidden">
