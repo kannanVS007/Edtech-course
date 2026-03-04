@@ -163,12 +163,12 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative pt-44 pb-32 px-4 overflow-hidden">
+      <section className="relative pt-40 pb-32 px-4 overflow-hidden">
         {/* Background Accents */}
         <div className="absolute top-[-10%] right-[-10%] w-[50%] h-[50%] bg-primary/5 rounded-full blur-[120px] animate-pulse-slow" />
         <div className="absolute bottom-[-5%] left-[-5%] w-[40%] h-[40%] bg-blue-400/5 rounded-full blur-[100px] animate-pulse-slow" />
 
-        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
           {/* Left Content */}
           <motion.div
             initial={{ opacity: 0, x: -30 }}
@@ -241,7 +241,7 @@ export default function LandingPage() {
             initial={{ opacity: 0, scale: 0.9, rotate: 2 }}
             animate={{ opacity: 1, scale: 1, rotate: 0 }}
             transition={{ duration: 1, ease: "easeOut", delay: 0.3 }}
-            className="relative lg:-mt-32 mt-12"
+            className="relative lg:-mt-14"
           >
             {/* Main Mockup Card */}
             <div className="relative z-10 p-4 bg-background border border-border rounded-5xl shadow-premium-xl glass group overflow-hidden">
