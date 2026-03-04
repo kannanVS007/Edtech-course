@@ -15,6 +15,7 @@ import AdminCoursesPage from '@/components/admin/AdminCourses';
 import AdminUsersPage from '@/components/admin/AdminUsers';
 import AdminModulesPage from '@/components/admin/AdminModules';
 import api from '@/lib/axios';
+import { useLanguageStore } from '@/store/languageStore';
 
 const KPI_DATA = [
     { label: 'Total Users', value: '5,240', change: '+12%', icon: Users, color: 'text-primary bg-primary/10', up: true },
@@ -34,6 +35,7 @@ const TABS = [
 import { useSearchParams } from 'next/navigation';
 
 export default function AdminPage() {
+    const { t } = useLanguageStore();
     const searchParams = useSearchParams();
     const initialTab = searchParams.get('tab') || 'overview';
     const [activeTab, setActiveTab] = useState(initialTab);
@@ -67,9 +69,9 @@ export default function AdminPage() {
                 <div className="flex items-center justify-between flex-wrap gap-4">
                     <div>
                         <h1 className="text-3xl font-extrabold tracking-tight flex items-center gap-3 font-outfit uppercase">
-                            <Shield className="w-8 h-8 text-primary" /> Admin Panel
+                            <Shield className="w-8 h-8 text-primary" /> {t('adminPanel')}
                         </h1>
-                        <p className="text-muted-foreground mt-1 font-medium italic">Elite control for the Skiller ecosystem. Total: <span className="text-primary font-bold">{stats.totalUsers}</span> users found.</p>
+                        <p className="text-muted-foreground mt-1 font-medium italic">{t('adminTagline')}. {t('total')}: <span className="text-primary font-bold">{stats.totalUsers}</span> {t('usersFound')}.</p>
                     </div>
                     <Button variant="outline" className="gap-2 font-bold uppercase tracking-widest text-xs">
                         <Download className="w-4 h-4" /> Export Report

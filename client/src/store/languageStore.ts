@@ -86,6 +86,9 @@ const translations = {
         ecosystem: 'Ecosystem',
         support: 'Support',
         systemsActive: 'Systems Operational',
+        adminTagline: 'Elite control for the Skiller ecosystem',
+        total: 'Total',
+        usersFound: 'users found',
     },
     ta: {
         welcome: 'பிரீமியம் எட்டெக் வரவேற்கிறோம்',
@@ -161,6 +164,9 @@ const translations = {
         ecosystem: 'சுற்றுச்சூழல்',
         support: 'ஆதரவு',
         systemsActive: 'அமைப்புகள் செயல்படுகின்றன',
+        adminTagline: 'ஸ்கில்லர் சுற்றுச்சூழல் அமைப்பிற்கான எலைட் கட்டுப்பாடு',
+        total: 'மொத்தம்',
+        usersFound: 'பயனர்கள் கண்டறியப்பட்டனர்',
     },
 };
 
