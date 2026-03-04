@@ -77,6 +77,7 @@ export default function CourseDetailPage() {
                                     title={activeModule.title}
                                     className="w-full h-full"
                                     allowFullScreen
+                                    loading="lazy"
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 />
                             </div>
@@ -85,7 +86,11 @@ export default function CourseDetailPage() {
                         {/* Now Playing Info */}
                         <div className="flex items-start justify-between gap-4">
                             <div>
-                                <Badge variant="neutral" size="sm" className="mb-2">Now Playing</Badge>
+                                <div className="flex gap-2 mb-2">
+                                    <Badge variant="neutral" size="sm">Now Playing</Badge>
+                                    <Badge variant="primary" size="sm" className="bg-blue-500/10 text-blue-500 border-none">{MOCK_COURSE.language}</Badge>
+                                    <Badge variant="warning" size="sm" className="bg-amber-500/10 text-amber-500 border-none">{MOCK_COURSE.level}</Badge>
+                                </div>
                                 <h2 className="text-2xl font-bold">{activeModule.title}</h2>
                                 <p className="text-muted-foreground text-sm mt-1 flex items-center gap-2">
                                     <Clock className="w-4 h-4" /> {activeModule.duration}

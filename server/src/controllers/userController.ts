@@ -5,14 +5,18 @@ import { AppError } from '@/utils/appError';
 
 export const getAllUsers = catchAsync(async (req: any, res: Response) => {
     const { search, role, status, sort } = req.query;
+    const page = parseInt(req.query.page as string, 10) || 1;
+    const limit = parseInt(req.query.limit as string, 10) || 10;
+    const skip = (page - 1) * limit;
 
-    let query: any = {};
+    let query: any = { role: { $ne: 'bot' } }; // Exclude bot/system users explicitly
 
     // Search by name or email
     if (search) {
         query.$or = [
             { name: { $regex: search, $options: 'i' } },
-            { email: { $regex: search, $options: 'i' } }
+            { email: { $regex: search, $options: 'i' } },
+            { mobile: { $regex: search, $options: 'i' } }
         ];
     }
 
@@ -33,15 +37,23 @@ export const getAllUsers = catchAsync(async (req: any, res: Response) => {
         const sortBy = (sort as string).split(',').join(' ');
         mongooseQuery = mongooseQuery.sort(sortBy);
     } else {
-        mongooseQuery = mongooseQuery.sort('-createdAt');
+        mongooseQuery = mongooseQuery.sort('-lastLogin -createdAt');
     }
 
-    const users = await mongooseQuery;
+    mongooseQuery = mongooseQuery.skip(skip).limit(limit);
+
+    // Execute queries in parallel
+    const [users, totalUsers] = await Promise.all([
+        mongooseQuery,
+        User.countDocuments(query)
+    ]);
+
+    const totalPages = Math.ceil(totalUsers / limit);
 
     res.status(200).json({
         status: 'success',
         results: users.length,
-        data: { users }
+        data: { users, totalUsers, totalPages, page, limit }
     });
 });
 

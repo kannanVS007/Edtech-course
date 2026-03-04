@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { Users, Search, Pencil, Trash2, ShieldCheck, ShieldOff, Mail, Phone, Calendar, MoreVertical, Ban, CheckCircle } from 'lucide-react';
+import { Users, Search, Pencil, Trash2, ShieldCheck, ShieldOff, Mail, Phone, Calendar, MoreVertical, Ban, CheckCircle, Clock } from 'lucide-react';
 import { ConfirmModal } from '@/components/ui/Modal';
 import { Badge } from '@/components/ui/Badge';
 import api from '@/lib/axios';
@@ -13,23 +13,36 @@ export default function AdminUsersPage() {
     const [deleteTarget, setDeleteTarget] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [isActionLoading, setIsActionLoading] = useState(false);
+    const [page, setPage] = useState(1);
+    const [limit] = useState(10);
+    const [totalPages, setTotalPages] = useState(1);
+    const [totalUsers, setTotalUsers] = useState(0);
+
+    // Reset pagination to page 1 on search or filter change
+    useEffect(() => {
+        setPage(1);
+    }, [search, filters]);
 
     const fetchUsers = useCallback(async () => {
         setIsLoading(true);
         try {
             const params = new URLSearchParams();
+            params.append('page', page.toString());
+            params.append('limit', limit.toString());
             if (search) params.append('search', search);
             if (filters.role) params.append('role', filters.role);
             if (filters.status) params.append('status', filters.status);
 
             const response = await api.get(`/users?${params.toString()}`);
             setUsers(response.data.data.users);
+            setTotalPages(response.data.data.totalPages);
+            setTotalUsers(response.data.data.totalUsers);
         } catch (error) {
             console.error('Failed to fetch users', error);
         } finally {
             setIsLoading(false);
         }
-    }, [search, filters]);
+    }, [search, filters, page, limit]);
 
     useEffect(() => {
         const timeout = setTimeout(fetchUsers, 500);
@@ -84,7 +97,7 @@ export default function AdminUsersPage() {
                         <Users className="w-8 h-8 text-primary" /> User Management
                     </h2>
                     <p className="text-muted-foreground text-sm mt-1 font-medium italic">
-                        Elite control for the Skiller ecosystem.
+                        Elite control for the Skiller ecosystem. Total: <span className="text-primary font-bold">{totalUsers}</span> users found.
                     </p>
                 </div>
             </div>
@@ -124,7 +137,7 @@ export default function AdminUsersPage() {
                     <table className="w-full">
                         <thead>
                             <tr className="border-b border-border bg-surface/50">
-                                {['User', 'Contact', 'Role', 'Status', 'Joined', 'Actions'].map(h => (
+                                {['User', 'Contact', 'Role', 'Status', 'Last Login', 'Joined', 'Actions'].map(h => (
                                     <th key={h} className="px-6 py-4 text-left text-xs font-black text-muted-foreground uppercase tracking-widest">{h}</th>
                                 ))}
                             </tr>
@@ -138,7 +151,7 @@ export default function AdminUsersPage() {
                                                 {user.avatar ? (
                                                     <img src={user.avatar} alt="" className="w-full h-full rounded-2xl object-cover" />
                                                 ) : (
-                                                    user.name.charAt(0)
+                                                    user.name?.charAt(0) || 'U'
                                                 )}
                                             </div>
                                             <div>
@@ -152,11 +165,9 @@ export default function AdminUsersPage() {
                                             <div className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
                                                 <Mail className="w-3 h-3" /> {user.email}
                                             </div>
-                                            {user.mobile && (
-                                                <div className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
-                                                    <Phone className="w-3 h-3" /> {user.mobile}
-                                                </div>
-                                            )}
+                                            <div className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
+                                                <Phone className="w-3 h-3" /> {user.mobile ? user.mobile : 'N/A'}
+                                            </div>
                                         </div>
                                     </td>
                                     <td className="px-6 py-4">
@@ -170,8 +181,17 @@ export default function AdminUsersPage() {
                                         </Badge>
                                     </td>
                                     <td className="px-6 py-4">
+                                        {user.lastLogin ? (
+                                            <div className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
+                                                <Clock className="w-3 h-3" /> {new Date(user.lastLogin).toLocaleString()}
+                                            </div>
+                                        ) : (
+                                            <span className="text-xs text-muted-foreground">Never</span>
+                                        )}
+                                    </td>
+                                    <td className="px-6 py-4">
                                         <div className="flex items-center gap-1.5 text-xs font-bold text-muted-foreground">
-                                            <Calendar className="w-3 h-3" /> {new Date(user.createdAt).toLocaleDateString()}
+                                            <Calendar className="w-3 h-3" /> {new Date(user.createdAt).toLocaleString()}
                                         </div>
                                     </td>
                                     <td className="px-6 py-4 text-right">
@@ -213,11 +233,34 @@ export default function AdminUsersPage() {
                     {!isLoading && users.length === 0 && (
                         <div className="text-center py-20 text-muted-foreground">
                             <Users className="w-16 h-16 mx-auto mb-4 opacity-10" />
-                            <p className="font-black uppercase tracking-widest text-xs">No skillers found in the database.</p>
+                            <p className="font-black uppercase tracking-widest text-xs">No skillers found matching your criteria.</p>
                         </div>
                     )}
                 </div>
             </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+                <div className="flex items-center justify-between mt-6 bg-surface p-4 rounded-xl border border-border">
+                    <button
+                        disabled={page === 1 || isLoading}
+                        onClick={() => setPage((prev) => Math.max(1, prev - 1))}
+                        className="px-4 py-2 bg-background border border-border rounded-lg text-sm font-bold shadow-sm hover:bg-primary/10 hover:text-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        Previous
+                    </button>
+                    <span className="text-sm font-bold text-muted-foreground">
+                        Page {page} of {totalPages}
+                    </span>
+                    <button
+                        disabled={page === totalPages || isLoading}
+                        onClick={() => setPage((prev) => Math.min(totalPages, prev + 1))}
+                        className="px-4 py-2 bg-background border border-border rounded-lg text-sm font-bold shadow-sm hover:bg-primary/10 hover:text-primary transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        Next
+                    </button>
+                </div>
+            )}
 
             <ConfirmModal
                 isOpen={!!deleteTarget}

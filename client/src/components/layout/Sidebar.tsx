@@ -12,7 +12,8 @@ import {
     GraduationCap,
     BarChart3,
     Bookmark,
-    Shield
+    Shield,
+    Users
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -36,22 +37,27 @@ export const Sidebar = ({
     const { t } = useLanguageStore();
     const router = useRouter();
 
-    const menuItems = [
-        { name: t('dashboard'), icon: LayoutDashboard, path: '/dashboard' },
-        { name: 'Home', icon: BookOpen, path: '/' },
-        { name: t('courses'), icon: BookOpen, path: '/my-courses' },
-        { name: t('allCourses'), icon: GraduationCap, path: '/courses' },
-        { name: t('quizzes'), icon: BarChart3, path: '/quizzes' },
-        { name: t('bookmarks'), icon: Bookmark, path: '/bookmarks' },
-        { name: t('settings'), icon: Settings, path: '/settings' },
-    ];
+    const menuItems = React.useMemo(() => {
+        const baseItems = [
+            { name: t('dashboard'), icon: LayoutDashboard, path: '/dashboard' },
+            { name: 'Home', icon: BookOpen, path: '/' },
+            { name: t('courses'), icon: BookOpen, path: '/my-courses' },
+            { name: t('allCourses'), icon: GraduationCap, path: '/courses' },
+            { name: t('quizzes'), icon: BarChart3, path: '/quizzes' },
+            { name: t('bookmarks'), icon: Bookmark, path: '/bookmarks' },
+            { name: t('settings'), icon: Settings, path: '/settings' },
+        ];
 
-    if (user?.role === 'admin') {
-        const adminItem = { name: t('adminPanel'), icon: Shield, path: '/admin' };
-        if (!menuItems.some(i => i.path === '/admin')) {
-            menuItems.splice(1, 0, adminItem);
+        if (user?.role === 'admin') {
+            const adminItems = [
+                { name: t('adminPanel'), icon: Shield, path: '/admin' },
+            ];
+            // Insert admin items after Dashboard
+            return [baseItems[0], ...adminItems, ...baseItems.slice(1)];
         }
-    }
+
+        return baseItems;
+    }, [user, t]);
 
     const handleLogout = () => {
         logout();

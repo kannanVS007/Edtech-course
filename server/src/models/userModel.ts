@@ -23,6 +23,7 @@ export interface IUser extends Document {
     githubId?: string;
     enrolledCourses: mongoose.Types.ObjectId[];
     passwordChangedAt?: Date;
+    lastLogin?: Date;
     comparePassword(candidate: string): Promise<boolean>;
 }
 
@@ -60,14 +61,17 @@ const UserSchema: Schema = new Schema(
         githubId: { type: String },
         enrolledCourses: [{ type: Schema.Types.ObjectId, ref: 'Course' }],
         passwordChangedAt: Date,
+        lastLogin: { type: Date },
     },
     { timestamps: true },
 );
 
-// Indexes for search
+// Indexes for search and sorting
 UserSchema.index({ name: 'text', email: 'text' });
-
-
+UserSchema.index({ email: 1 });
+UserSchema.index({ role: 1 });
+UserSchema.index({ lastLogin: -1 });
+UserSchema.index({ createdAt: -1 });
 
 UserSchema.pre<IUser>('save', async function () {
     if (!this.isModified('password')) return;

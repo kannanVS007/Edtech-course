@@ -70,8 +70,9 @@ export const TopBar = ({ onMenuClick }: { onMenuClick?: () => void }) => {
                 {/* User Profile */}
                 <div className="flex items-center gap-2 sm:gap-3 pl-1 sm:pl-2">
                     <div className="text-right hidden lg:block">
-                        <p className="text-sm font-bold tracking-tight leading-tight truncate max-w-[120px]">{user?.name}</p>
-                        <p className="text-[9px] text-primary font-black uppercase tracking-[0.2em] opacity-80">{user?.role}</p>
+                        <p className="text-sm font-black tracking-tight leading-tight truncate max-w-[150px]">{user?.name}</p>
+                        <p className="text-[10px] text-muted-foreground font-bold truncate max-w-[150px]">{user?.email}</p>
+                        <p className="text-[9px] text-primary font-black uppercase tracking-[0.2em] opacity-80 mt-0.5">{user?.role}</p>
                     </div>
                     <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-white font-black text-sm border-2 border-background shadow-premium-xl ring-1 ring-primary/10">
                         {user?.name?.charAt(0)}

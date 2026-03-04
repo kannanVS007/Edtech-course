@@ -110,7 +110,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className={inter.className} style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }}>
+      <body className={inter.className} style={{ fontFamily: 'var(--font-inter), system-ui, sans-serif' }} suppressHydrationWarning>
         <GoogleOAuthProvider clientId={googleClientId}>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
             <ScrollProgress />

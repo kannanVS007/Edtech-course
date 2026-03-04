@@ -88,6 +88,9 @@ export const login = catchAsync(async (req: any, res: any, next: any) => {
         return next(new AppError('Incorrect email or password', 401));
     }
 
+    user.lastLogin = new Date();
+    await user.save({ validateBeforeSave: false });
+
     createSendToken(user, 200, res);
 });
 
@@ -132,6 +135,9 @@ export const googleLogin = catchAsync(async (req: any, res: any, next: any) => {
         // Send Welcome Email
         await sendWelcomeEmail(user.email, user.name);
     }
+
+    user.lastLogin = new Date();
+    await user.save({ validateBeforeSave: false });
 
     createSendToken(user, 200, res);
 });
@@ -207,6 +213,9 @@ export const githubLogin = catchAsync(async (req: any, res: any, next: any) => {
         // Send Welcome Email
         await sendWelcomeEmail(user.email, user.name);
     }
+
+    user.lastLogin = new Date();
+    await user.save({ validateBeforeSave: false });
 
     createSendToken(user, 200, res);
 });

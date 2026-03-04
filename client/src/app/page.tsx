@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { BookOpen, Shield, Zap, Globe, ArrowRight, Play, CheckCircle, Star, GraduationCap, Users, Award, MoveRight, Menu, X } from 'lucide-react';
+import { BookOpen, Shield, Zap, Globe, ArrowRight, ArrowLeft, Play, CheckCircle, Star, GraduationCap, Users, Award, MoveRight, Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -11,8 +11,23 @@ import { Instagram, Linkedin, Phone } from 'lucide-react';
 
 export default function LandingPage() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [itemsPerView, setItemsPerView] = useState(1);
+  const [isMounted, setIsMounted] = useState(false);
   const { t, language, setLanguage } = useLanguageStore();
   const router = useRouter();
+
+  useEffect(() => {
+    setIsMounted(true);
+    const handleResize = () => {
+      if (window.innerWidth >= 1024) setItemsPerView(3);
+      else if (window.innerWidth >= 768) setItemsPerView(2);
+      else setItemsPerView(1);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleGetStarted = () => {
     router.push('/register');
@@ -32,6 +47,15 @@ export default function LandingPage() {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0 }
   };
+
+  const courses = [
+    { name: "Fullstack Engineering", color: "from-blue-600 to-indigo-600", tag: "Most Popular" },
+    { name: "Advanced UI Design", color: "from-purple-600 to-pink-600", tag: "New" },
+    { name: "AI & Machine Learning", color: "from-emerald-600 to-teal-600", tag: "Trending" },
+    { name: "Mobile App mastery", color: "from-amber-600 to-orange-600", tag: "Bestseller" },
+    { name: "DevOps & Cloud", color: "from-slate-700 to-blue-800", tag: "Tech" },
+    { name: "Product Management", color: "from-rose-600 to-red-600", tag: "Business" },
+  ];
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -145,13 +169,29 @@ export default function LandingPage() {
             </motion.div>
 
             <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-8 tracking-premium leading-[0.9] font-outfit">
-              {t('heroTitle').split(' ').slice(0, -1).join(' ')} <br />
-              <span className="gradient-text">{t('heroTitle').split(' ').slice(-1)}</span>
+              100% Free <br />
+              <span className="gradient-text">Coding Learning Platform</span>
             </h1>
 
-            <p className="text-xl text-muted-foreground mb-12 max-w-xl leading-relaxed font-medium">
-              {t('heroDesc')}
+            <div className="flex items-center gap-4 mb-4">
+              <span className="px-3 py-1 font-bold uppercase tracking-widest bg-emerald-500/10 text-emerald-500 rounded-lg text-xs">Tamil</span>
+              <span className="px-3 py-1 font-bold uppercase tracking-widest bg-blue-500/10 text-blue-500 rounded-lg text-xs">English</span>
+            </div>
+
+            <p className="text-xl text-muted-foreground mb-8 max-w-xl leading-relaxed font-medium">
+              {t('heroSubtitle')}
             </p>
+
+            <div className="bg-surface/50 border border-border rounded-3xl p-6 mb-12 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="flex-1">
+                <h4 className="font-bold text-sm uppercase tracking-widest text-muted-foreground mb-3">{t('premiumFeatures')}</h4>
+                <div className="flex flex-wrap gap-2 text-sm font-semibold">
+                  <span className="px-3 py-1 bg-amber-500/10 text-amber-500 rounded-lg flex items-center gap-1.5"><Star className="w-3.5 h-3.5" /> {t('mockTests')}</span>
+                  <span className="px-3 py-1 bg-purple-500/10 text-purple-500 rounded-lg flex items-center gap-1.5"><Shield className="w-3.5 h-3.5" /> {t('interviewPrep')}</span>
+                  <span className="px-3 py-1 bg-rose-500/10 text-rose-500 rounded-lg flex items-center gap-1.5"><Users className="w-3.5 h-3.5" /> {t('doubtSessions')}</span>
+                </div>
+              </div>
+            </div>
 
             <div className="flex flex-col sm:flex-row gap-5">
               <button
@@ -211,8 +251,8 @@ export default function LandingPage() {
                 <CheckCircle className="w-6 h-6" />
               </div>
               <div>
-                <p className="text-xs font-black text-muted-foreground uppercase tracking-widest leading-none mb-1">Success</p>
-                <p className="text-lg font-black leading-none">Lesson Complete</p>
+                <p className="text-xs font-black text-muted-foreground uppercase tracking-widest leading-none mb-1">{t('successStory')}</p>
+                <p className="text-lg font-black leading-none">{t('lessonComplete')}</p>
               </div>
             </motion.div>
 
@@ -225,8 +265,8 @@ export default function LandingPage() {
                 <Star className="w-6 h-6 fill-white" />
               </div>
               <div>
-                <p className="text-xs font-black text-muted-foreground uppercase tracking-widest leading-none mb-1">New Reward</p>
-                <p className="text-lg font-black leading-none">Skiller Pro Badge</p>
+                <p className="text-xs font-black text-muted-foreground uppercase tracking-widest leading-none mb-1">{t('newReward')}</p>
+                <p className="text-lg font-black leading-none">{t('skillerBadge')}</p>
               </div>
             </motion.div>
           </motion.div>
@@ -262,59 +302,67 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Infinite Course Slider */}
-      <section className="py-12 overflow-hidden bg-background relative">
-        <div className="absolute inset-y-0 left-0 w-32 bg-gradient-to-r from-background to-transparent z-10" />
-        <div className="absolute inset-y-0 right-0 w-32 bg-gradient-to-l from-background to-transparent z-10" />
+      {/* Interactive Course Slider */}
+      {isMounted && (
+        <section className="py-20 overflow-hidden bg-background relative border-y border-border">
+          <div className="max-w-7xl mx-auto px-4 mb-10 flex items-center justify-between">
+            <div>
+              <h2 className="text-sm font-black text-primary uppercase tracking-[0.3em] mb-2">{t('featuredLearning')}</h2>
+              <h3 className="text-3xl font-black font-outfit tracking-premium">{t('topPrograms')}</h3>
+            </div>
 
-        <div className="flex select-none">
-          <motion.div
-            animate={{ x: [0, -1920] }}
-            transition={{
-              duration: 40,
-              repeat: Infinity,
-              ease: "linear"
-            }}
-            className="flex gap-8 whitespace-nowrap"
-          >
-            {[...Array(2)].map((_, i) => (
-              <React.Fragment key={i}>
-                {[
-                  { name: "Fullstack Engineering", color: "from-blue-600 to-indigo-600", tag: "Most Popular" },
-                  { name: "Advanced UI Design", color: "from-purple-600 to-pink-600", tag: "New" },
-                  { name: "AI & Machine Learning", color: "from-emerald-600 to-teal-600", tag: "Trending" },
-                  { name: "Mobile App mastery", color: "from-amber-600 to-orange-600", tag: "Bestseller" },
-                  { name: "DevOps & Cloud", color: "from-slate-700 to-blue-800", tag: "Tech" },
-                  { name: "Product Management", color: "from-rose-600 to-red-600", tag: "Business" },
-                ].map((course, idx) => (
-                  <div
-                    key={idx}
-                    className="w-[400px] h-[220px] rounded-[2.5rem] bg-gradient-to-br p-px relative group overflow-hidden shadow-premium"
-                  >
-                    <div className={`absolute inset-0 bg-gradient-to-br ${course.color} opacity-90`} />
-                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
+            <div className="flex gap-3">
+              <button
+                onClick={() => setCurrentSlide(prev => Math.max(0, prev - 1))}
+                disabled={currentSlide === 0}
+                className="w-12 h-12 rounded-2xl border border-border flex items-center justify-center hover:bg-surface hover:text-primary transition-all disabled:opacity-30 disabled:cursor-not-allowed group shadow-sm bg-background z-10"
+              >
+                <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+              </button>
+              <button
+                onClick={() => setCurrentSlide(prev => Math.min(courses.length - itemsPerView, prev + 1))}
+                disabled={currentSlide >= courses.length - itemsPerView}
+                className="w-12 h-12 rounded-2xl border border-border flex items-center justify-center hover:bg-surface hover:text-primary transition-all disabled:opacity-30 disabled:cursor-not-allowed group shadow-sm bg-background z-10"
+              >
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </button>
+            </div>
+          </div>
 
-                    <div className="relative h-full w-full p-8 flex flex-col justify-between">
-                      <div className="flex justify-between items-start">
-                        <div className="px-4 py-1.5 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest text-white border border-white/10">
-                          {course.tag}
-                        </div>
-                        <div className="w-10 h-10 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/10 group-hover:bg-white group-hover:text-primary transition-all">
-                          <ArrowRight className="w-5 h-5" />
-                        </div>
+          <div className="max-w-7xl mx-auto px-4 overflow-hidden">
+            <motion.div
+              animate={{ x: `calc(-${currentSlide * (100 / itemsPerView)}% - ${currentSlide * (24 / itemsPerView)}px)` }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="flex flex-nowrap gap-6"
+            >
+              {courses.map((course, idx) => (
+                <div
+                  key={idx}
+                  className="min-w-[100%] md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] h-[240px] rounded-[2.5rem] bg-gradient-to-br p-px relative group overflow-hidden shadow-premium shrink-0"
+                >
+                  <div className={`absolute inset-0 bg-gradient-to-br ${course.color} opacity-90`} />
+                  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
+
+                  <div className="relative h-full w-full p-8 flex flex-col justify-between">
+                    <div className="flex justify-between items-start">
+                      <div className="px-4 py-1.5 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest text-white border border-white/10">
+                        {course.tag}
                       </div>
-                      <div>
-                        <p className="text-white/70 text-xs font-black uppercase tracking-widest mb-1">Professional Program</p>
-                        <h4 className="text-2xl font-black text-white font-outfit tracking-premium">{course.name}</h4>
+                      <div className="w-10 h-10 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/10 group-hover:bg-white group-hover:text-primary transition-all">
+                        <ArrowRight className="w-5 h-5" />
                       </div>
                     </div>
+                    <div>
+                      <p className="text-white/70 text-xs font-black uppercase tracking-widest mb-1">{t('proProgram')}</p>
+                      <h4 className="text-2xl font-black text-white font-outfit tracking-premium">{course.name}</h4>
+                    </div>
                   </div>
-                ))}
-              </React.Fragment>
-            ))}
-          </motion.div>
-        </div>
-      </section>
+                </div>
+              ))}
+            </motion.div>
+          </div>
+        </section>
+      )}
 
       {/* Features Grid */}
       <section id="features" className="py-32 relative px-4 bg-surface/30 border-y border-border overflow-hidden">
@@ -322,7 +370,7 @@ export default function LandingPage() {
 
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="text-center max-w-3xl mx-auto mb-20">
-            <h2 className="text-sm font-black text-primary uppercase tracking-[0.3em] mb-4">Core Ecosystem</h2>
+            <h2 className="text-sm font-black text-primary uppercase tracking-[0.3em] mb-4">{t('coreEcosystem')}</h2>
             <h3 className="text-4xl md:text-5xl font-black mb-6 font-outfit tracking-premium">{t('featuresTitle')}</h3>
             <p className="text-muted-foreground text-lg font-medium leading-relaxed">
               {t('featuresDesc')}
@@ -368,7 +416,7 @@ export default function LandingPage() {
                 <h3 className="text-2xl font-black mb-4 font-outfit tracking-premium">{feature.title}</h3>
                 <p className="text-muted-foreground font-medium leading-relaxed mb-8">{feature.desc}</p>
                 <Link href="/register" className="flex items-center gap-2 text-primary font-black text-sm uppercase tracking-widest group-hover:gap-4 transition-all">
-                  Learn More <MoveRight className="w-5 h-5" />
+                  {t('learnMore')} <MoveRight className="w-5 h-5" />
                 </Link>
               </motion.div>
             ))}
@@ -381,7 +429,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto">
           <div className="flex flex-col lg:flex-row justify-between items-end mb-20 gap-8">
             <div className="max-w-2xl">
-              <h2 className="text-sm font-black text-primary uppercase tracking-[0.3em] mb-4">Infinite Paths</h2>
+              <h2 className="text-sm font-black text-primary uppercase tracking-[0.3em] mb-4">{t('infinitePaths')}</h2>
               <h3 className="text-4xl md:text-6xl font-black font-outfit tracking-premium">
                 {t('readyToSpecialize')}
               </h3>
@@ -393,10 +441,10 @@ export default function LandingPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
-              { name: 'Web Engineering', courses: '24', icon: '01', gradient: 'from-[#2563eb] to-[#0ea5e9]' },
-              { name: 'UI/UX Design', courses: '18', icon: '02', gradient: 'from-[#6366f1] to-[#a855f7]' },
-              { name: 'Data Intelligence', courses: '15', icon: '03', gradient: 'from-[#10b981] to-[#3b82f6]' },
-              { name: 'Mobile Systems', courses: '12', icon: '04', gradient: 'from-[#f59e0b] to-[#ef4444]' }
+              { name: t('webEng'), courses: '24', icon: '01', gradient: 'from-[#2563eb] to-[#0ea5e9]' },
+              { name: t('uiDesign'), courses: '18', icon: '02', gradient: 'from-[#6366f1] to-[#a855f7]' },
+              { name: t('dataInt'), courses: '15', icon: '03', gradient: 'from-[#10b981] to-[#3b82f6]' },
+              { name: t('mobSys'), courses: '12', icon: '04', gradient: 'from-[#f59e0b] to-[#ef4444]' }
             ].map((cat, idx) => (
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
@@ -439,7 +487,7 @@ export default function LandingPage() {
               {[1, 2, 3, 4, 5].map(i => <Star key={i} className="w-6 h-6 text-amber-500 fill-amber-500" />)}
             </div>
             <h2 className="text-4xl md:text-6xl font-black mb-16 text-white font-outfit tracking-premium leading-tight">
-              "Finally, a platform that understands <span className="text-primary">bilingual excellence</span>. The structure is world-class."
+              {t('testimonial')}
             </h2>
             <div className="flex flex-col items-center gap-6">
               <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-primary to-blue-800 p-1 shadow-glow">
@@ -447,7 +495,7 @@ export default function LandingPage() {
               </div>
               <div>
                 <p className="font-black text-2xl text-white mb-1">V.S. Kannan</p>
-                <p className="text-primary font-black uppercase tracking-[0.2em] text-xs">Principal Software Architect</p>
+                <p className="text-primary font-black uppercase tracking-[0.2em] text-xs">{t('prinArch')}</p>
               </div>
             </div>
           </motion.div>
@@ -520,7 +568,7 @@ export default function LandingPage() {
             </div>
           </div>
           <div>
-            <h4 className="font-black uppercase tracking-widest text-sm mb-8">Ecosystem</h4>
+            <h4 className="font-black uppercase tracking-widest text-sm mb-8">{t('ecosystem')}</h4>
             <ul className="space-y-4 text-muted-foreground font-bold text-sm">
               <li><Link href="/courses" className="hover:text-primary transition-colors">Courses</Link></li>
               <li><Link href="/mentors" className="hover:text-primary transition-colors">Mentorship</Link></li>
@@ -529,7 +577,7 @@ export default function LandingPage() {
             </ul>
           </div>
           <div>
-            <h4 className="font-black uppercase tracking-widest text-sm mb-8">Support</h4>
+            <h4 className="font-black uppercase tracking-widest text-sm mb-8">{t('support')}</h4>
             <ul className="space-y-4 text-muted-foreground font-bold text-sm">
               <li><Link href="/help" className="hover:text-primary transition-colors">Help Center</Link></li>
               <li><Link href="/contact" className="hover:text-primary transition-colors">Contact Us</Link></li>
@@ -542,7 +590,7 @@ export default function LandingPage() {
           <p className="text-muted-foreground text-sm font-bold">{t('copyright')}</p>
           <div className="flex items-center gap-4">
             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">Systems Operational</span>
+            <span className="text-xs font-black uppercase tracking-widest text-muted-foreground">{t('systemsActive')}</span>
           </div>
         </div>
       </motion.footer>
