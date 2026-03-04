@@ -49,12 +49,12 @@ export default function LandingPage() {
   };
 
   const courses = [
-    { name: "Fullstack Engineering", color: "from-blue-600 to-indigo-600", tag: "Most Popular" },
-    { name: "Advanced UI Design", color: "from-purple-600 to-pink-600", tag: "New" },
-    { name: "AI & Machine Learning", color: "from-emerald-600 to-teal-600", tag: "Trending" },
-    { name: "Mobile App mastery", color: "from-amber-600 to-orange-600", tag: "Bestseller" },
-    { name: "DevOps & Cloud", color: "from-slate-700 to-blue-800", tag: "Tech" },
-    { name: "Product Management", color: "from-rose-600 to-red-600", tag: "Business" },
+    { name: "Balachandra (Tamil)", color: "from-blue-600 to-indigo-600", tag: "Tech Guru" },
+    { name: "Code IO (Tamil)", color: "from-purple-600 to-pink-600", tag: "Best for logic" },
+    { name: "JVL Code (Tamil)", color: "from-emerald-600 to-teal-600", tag: "Expert Training" },
+    { name: "Error Makes Clever", color: "from-amber-600 to-orange-600", tag: "Tamil Mastery" },
+    { name: "Tamil Skills Hub", color: "from-slate-700 to-blue-800", tag: "Career Ready" },
+    { name: "Creative Tamil", color: "from-rose-600 to-red-600", tag: "UI/UX King" },
   ];
 
   return (
@@ -128,8 +128,25 @@ export default function LandingPage() {
               <div className="flex flex-col p-6 gap-6 font-bold text-lg">
                 <Link href="#features" onClick={() => setIsMobileMenuOpen(false)} className="text-muted-foreground hover:text-primary">Features</Link>
                 <Link href="#courses" onClick={() => setIsMobileMenuOpen(false)} className="text-muted-foreground hover:text-primary">Programs</Link>
+
+                {/* Language Toggle for Mobile */}
+                <div className="flex bg-surface/50 border border-border p-1.5 rounded-2xl w-fit">
+                  <button
+                    onClick={() => setLanguage('en')}
+                    className={`px-4 py-2 rounded-xl text-xs font-black tracking-widest transition-all ${language === 'en' ? 'bg-primary text-white shadow-glow' : 'text-muted-foreground hover:text-primary'}`}
+                  >
+                    EN
+                  </button>
+                  <button
+                    onClick={() => setLanguage('ta')}
+                    className={`px-4 py-2 rounded-xl text-xs font-black tracking-widest transition-all ${language === 'ta' ? 'bg-primary text-white shadow-glow' : 'text-muted-foreground hover:text-primary'}`}
+                  >
+                    தமிழ்
+                  </button>
+                </div>
+
                 <div className="h-px bg-border my-2" />
-                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="text-center py-4 rounded-2xl border border-border">Login</Link>
+                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="text-center py-4 rounded-2xl border border-border">{t('login')}</Link>
                 <button
                   onClick={() => {
                     handleGetStarted();
