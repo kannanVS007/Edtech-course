@@ -247,12 +247,12 @@ export default function LandingPage() {
             {/* Main Mockup Card */}
             <div className="relative z-10 p-4 bg-background border border-border rounded-5xl shadow-premium-xl glass group overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-primary/10 via-transparent to-blue-500/10 opacity-50" />
-              <div className="relative bg-surface rounded-4xl border border-border h-[460px] w-full overflow-hidden shadow-inner">
+              <div className="relative bg-surface rounded-4xl border border-border h-[420px] sm:h-[460px] lg:h-[500px] w-full overflow-hidden shadow-inner">
                 <Image
-                  src="/dashboard-mockup.png"
+                  src="/edtech.png"
                   alt="Become A Skiller Dashboard"
                   fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-1000"
+                  className="object-contain p-4 group-hover:scale-105 transition-transform duration-1000"
                 />
                 {/* Overlay Highlights */}
                 <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
