@@ -262,7 +262,7 @@ export default function LandingPage() {
             <motion.div
               animate={{ y: [0, -20, 0] }}
               transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-              className="absolute top-12 -right-12 z-20 p-6 bg-background border border-border rounded-3xl shadow-premium-xl glass flex items-center gap-4"
+              className="absolute top-12 -right-7 z-20 p-6 bg-background border border-border rounded-3xl shadow-premium-xl glass flex items-center gap-4"
             >
               <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center text-white shadow-lg">
                 <CheckCircle className="w-6 h-6" />
