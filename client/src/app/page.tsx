@@ -254,8 +254,7 @@ export default function LandingPage() {
                   fill
                   className="object-contain p-4 group-hover:scale-105 transition-transform duration-1000"
                 />
-                {/* Overlay Highlights */}
-                <div className="absolute inset-0 bg-gradient-to-t from-background/40 to-transparent" />
+
               </div>
             </div>
 
