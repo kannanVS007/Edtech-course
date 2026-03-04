@@ -206,6 +206,7 @@ export default function LandingPage() {
                   <span className="px-3 py-1 bg-amber-500/10 text-amber-500 rounded-lg flex items-center gap-1.5"><Star className="w-3.5 h-3.5" /> {t('mockTests')}</span>
                   <span className="px-3 py-1 bg-purple-500/10 text-purple-500 rounded-lg flex items-center gap-1.5"><Shield className="w-3.5 h-3.5" /> {t('interviewPrep')}</span>
                   <span className="px-3 py-1 bg-rose-500/10 text-rose-500 rounded-lg flex items-center gap-1.5"><Users className="w-3.5 h-3.5" /> {t('doubtSessions')}</span>
+                  <span className="px-3 py-1 bg-blue-500/10 text-blue-500 rounded-lg flex items-center gap-1.5"><GraduationCap className="w-3.5 h-3.5" /> {t('technicalTrainers')}</span>
                 </div>
               </div>
             </div>
