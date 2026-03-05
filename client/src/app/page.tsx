@@ -252,8 +252,7 @@ export default function LandingPage() {
                   src="/edtech.png"
                   alt="Become A Skiller Dashboard"
                   fill
-                  className="object-contain p-4 group-hover:scale-105 transition-transform duration-1000"
-                />
+                  className="object-contain p-2 sm:p-4 group-hover:scale-105 transition-transform duration-1000" />
 
               </div>
             </div>
