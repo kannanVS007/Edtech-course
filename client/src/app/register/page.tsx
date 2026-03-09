@@ -54,13 +54,6 @@ export default function RegisterPage() {
             const response = await api.post('/auth/github-login', { code });
             const { token, data: { user } } = response.data;
 
-            localStorage.setItem('token', token);
-            setToken(token);
-            setUser(user);
-
-            // Clear the code from URL
-            window.history.replaceState({}, document.title, window.location.pathname);
-
             router.push('/dashboard');
         } catch (err: any) {
             setError(err.response?.data?.message || 'GitHub Sign-In failed. Please try again.');
@@ -85,7 +78,6 @@ export default function RegisterPage() {
             });
             const { token, data: { user } } = response.data;
 
-            localStorage.setItem('token', token);
             setToken(token);
             setUser(user);
 
@@ -116,7 +108,6 @@ export default function RegisterPage() {
             });
             const { token, data: { user } } = response.data;
 
-            localStorage.setItem('token', token);
             setToken(token);
             setUser(user);
 
@@ -149,19 +140,20 @@ export default function RegisterPage() {
                                 width={100}
                                 height={100}
                                 className="object-contain group-hover:scale-110 transition-transform duration-500"
+                                style={{ width: 'auto', height: 'auto' }}
                             />
                         </div>
                     </div>
                     <div className="flex flex-col items-center leading-none mb-4">
                         <span className="text-xs font-black text-muted-foreground uppercase tracking-[0.4em] mb-1">Become A</span>
-                        <h1 className="text-5xl font-black text-primary tracking-premium uppercase">Skiller</h1>
+                        <h1 className="text-4xl md:text-5xl font-black text-primary tracking-premium uppercase">Skiller</h1>
                     </div>
-                    <p className="text-muted-foreground font-medium text-lg tracking-tight">
+                    <p className="text-muted-foreground font-medium text-base md:text-lg tracking-tight">
                         The elite destination for technical excellence.
                     </p>
                 </div>
 
-                <div className="bg-background/60 backdrop-blur-xl border border-border shadow-premium-xl rounded-[3rem] p-10 md:p-14 glass">
+                <div className="bg-background/60 backdrop-blur-xl border border-border shadow-premium-xl rounded-[3rem] p-6 sm:p-10 md:p-14 glass">
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                         {error && (
                             <motion.div

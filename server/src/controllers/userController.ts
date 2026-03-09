@@ -1,5 +1,6 @@
 import { Response } from 'express';
 import User, { UserRole, UserStatus } from '@/models/userModel';
+import Progress from '@/models/progressModel';
 import { catchAsync } from '@/utils/catchAsync';
 import { AppError } from '@/utils/appError';
 
@@ -113,6 +114,37 @@ export const updateUserStatus = catchAsync(async (req: any, res: Response, next:
     res.status(200).json({
         status: 'success',
         data: { user }
+    });
+});
+
+export const getUserStats = catchAsync(async (req: any, res: Response) => {
+    const userId = req.user._id;
+
+    const [progress, user] = await Promise.all([
+        Progress.find({ user: userId }).lean(),
+        User.findById(userId).select('enrolledCourses').lean()
+    ]);
+
+    const completedCoursesCount = progress.filter(p => p.isCompleted).length;
+    const enrolledCount = user?.enrolledCourses?.length || 0;
+    const activeCoursesCount = enrolledCount - completedCoursesCount;
+
+    // Calculate total modules completed across all courses
+    const totalModulesCompleted = progress.reduce((acc, curr) => acc + (curr.completedModules?.length || 0), 0);
+
+    // Estimate learning hours (e.g., 45 mins per module)
+    const learningHours = Math.round((totalModulesCompleted * 45) / 60);
+
+    res.status(200).json({
+        status: 'success',
+        data: {
+            stats: {
+                completedCourses: completedCoursesCount,
+                activeCourses: Math.max(0, activeCoursesCount),
+                certificates: completedCoursesCount,
+                learningHours: `${learningHours}h`
+            }
+        }
     });
 });
 

@@ -13,7 +13,11 @@ import {
     BarChart3,
     Bookmark,
     Shield,
-    Users
+    Users,
+    Home,
+    PlayCircle,
+    TrendingUp,
+    User
 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -34,18 +38,17 @@ export const Sidebar = ({
 }) => {
     const pathname = usePathname();
     const { logout, user } = useAuthStore();
-    const { t } = useLanguageStore();
+    const { t, language } = useLanguageStore(); // Destructure language to trigger re-renders
     const router = useRouter();
 
     const menuItems = React.useMemo(() => {
         const baseItems = [
             { name: t('dashboard'), icon: LayoutDashboard, path: '/dashboard' },
-            { name: 'Home', icon: BookOpen, path: '/' },
-            { name: t('courses'), icon: BookOpen, path: '/my-courses' },
-            { name: t('allCourses'), icon: GraduationCap, path: '/courses' },
-            { name: t('quizzes'), icon: BarChart3, path: '/quizzes' },
-            { name: t('bookmarks'), icon: Bookmark, path: '/bookmarks' },
-            { name: t('settings'), icon: Settings, path: '/settings' },
+            { name: t('home') || 'Home', icon: Home, path: '/' },
+            { name: t('courses'), icon: BookOpen, path: '/courses' },
+            { name: t('featuredLearning'), icon: PlayCircle, path: '/#featured' },
+            { name: t('progress') || 'Progress', icon: TrendingUp, path: '/progress' },
+            { name: t('profile'), icon: User, path: '/profile' },
         ];
 
         if (user?.role === 'admin') {
@@ -57,7 +60,7 @@ export const Sidebar = ({
         }
 
         return baseItems;
-    }, [user, t]);
+    }, [user, t, language]); // Include language in dependencies
 
     const handleLogout = () => {
         logout();

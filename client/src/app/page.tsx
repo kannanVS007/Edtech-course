@@ -7,26 +7,18 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useLanguageStore } from '@/store/languageStore';
+import { useAuthStore } from '@/store/authStore';
 import { Instagram, Linkedin, Phone } from 'lucide-react';
+import { FeaturedLearning } from '@/components/FeaturedLearning';
 
 export default function LandingPage() {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [currentSlide, setCurrentSlide] = useState(0);
-  const [itemsPerView, setItemsPerView] = useState(1);
   const [isMounted, setIsMounted] = useState(false);
   const { t, language, setLanguage } = useLanguageStore();
+  const { user } = useAuthStore();
   const router = useRouter();
 
   useEffect(() => {
     setIsMounted(true);
-    const handleResize = () => {
-      if (window.innerWidth >= 1024) setItemsPerView(3);
-      else if (window.innerWidth >= 768) setItemsPerView(2);
-      else setItemsPerView(1);
-    };
-    handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const handleGetStarted = () => {
@@ -48,14 +40,7 @@ export default function LandingPage() {
     visible: { opacity: 1, y: 0 }
   };
 
-  const courses = [
-    { name: "Balachandra (Tamil)", color: "from-blue-600 to-indigo-600", tag: "Tech Guru" },
-    { name: "Code IO (Tamil)", color: "from-purple-600 to-pink-600", tag: "Best for logic" },
-    { name: "JVL Code (Tamil)", color: "from-emerald-600 to-teal-600", tag: "Expert Training" },
-    { name: "Error Makes Clever", color: "from-amber-600 to-orange-600", tag: "Tamil Mastery" },
-    { name: "Tamil Skills Hub", color: "from-slate-700 to-blue-800", tag: "Career Ready" },
-    { name: "Creative Tamil", color: "from-rose-600 to-red-600", tag: "UI/UX King" },
-  ];
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
@@ -70,6 +55,7 @@ export default function LandingPage() {
                 width={48}
                 height={48}
                 className="object-contain"
+                style={{ width: 'auto', height: 'auto' }}
               />
             </div>
             <div className="flex flex-col justify-center leading-none">
@@ -98,13 +84,29 @@ export default function LandingPage() {
               </button>
             </div>
 
-            <Link href="/login" className="px-6 py-2.5 rounded-2xl border border-border text-foreground hover:bg-surface hover:border-primary/30 transition-all shadow-sm">{t('login')}</Link>
-            <button
-              onClick={handleGetStarted}
-              className="px-8 py-3.5 rounded-2xl bg-gradient-to-br from-primary to-blue-700 text-white hover:shadow-glow hover:translate-y-[-2px] active:translate-y-[0px] transition-all shadow-premium-xl"
-            >
-              {t('getStarted') || 'Get Started'}
-            </button>
+            {user ? (
+              <div className="flex items-center gap-4">
+                <Link href="/dashboard" className="flex items-center gap-3 pl-4 border-l border-border hover:bg-surface/50 p-2 rounded-2xl transition-all">
+                  <div className="text-right hidden lg:block">
+                    <p className="text-sm font-black tracking-tight leading-tight truncate max-w-[120px]">{user.name}</p>
+                    <p className="text-[10px] text-primary font-black uppercase tracking-[0.2em] opacity-80 mt-0.5">{user.role}</p>
+                  </div>
+                  <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-white font-black text-sm border-2 border-background shadow-premium ring-1 ring-primary/10">
+                    {user.name?.charAt(0)}
+                  </div>
+                </Link>
+              </div>
+            ) : (
+              <div className="flex items-center gap-6">
+                <Link href="/login" className="px-6 py-2.5 rounded-2xl border border-border text-foreground hover:bg-surface hover:border-primary/30 transition-all shadow-sm font-bold text-sm">{t('login') || 'Login'}</Link>
+                <button
+                  onClick={handleGetStarted}
+                  className="px-8 py-3.5 rounded-2xl bg-gradient-to-br from-primary to-blue-700 text-white hover:shadow-glow hover:translate-y-[-2px] active:translate-y-[0px] transition-all shadow-premium-xl font-bold text-sm"
+                >
+                  {t('getStarted') || 'Get Started'}
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu Toggle */}
@@ -146,16 +148,30 @@ export default function LandingPage() {
                 </div>
 
                 <div className="h-px bg-border my-2" />
-                <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="text-center py-4 rounded-2xl border border-border">{t('login')}</Link>
-                <button
-                  onClick={() => {
-                    handleGetStarted();
-                    setIsMobileMenuOpen(false);
-                  }}
-                  className="py-4 rounded-2xl bg-primary text-white shadow-premium-xl"
-                >
-                  Get Started
-                </button>
+                {user ? (
+                  <Link href="/dashboard" onClick={() => setIsMobileMenuOpen(false)} className="flex items-center gap-4 p-4 rounded-2xl bg-surface/50 border border-border">
+                    <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-primary to-blue-600 flex items-center justify-center text-white font-black text-lg">
+                      {user.name?.charAt(0)}
+                    </div>
+                    <div>
+                      <p className="font-black text-lg">{user.name}</p>
+                      <p className="text-xs text-primary font-black uppercase tracking-widest">{user.role}</p>
+                    </div>
+                  </Link>
+                ) : (
+                  <>
+                    <Link href="/login" onClick={() => setIsMobileMenuOpen(false)} className="text-center py-4 rounded-2xl border border-border">{t('login') || 'Login'}</Link>
+                    <button
+                      onClick={() => {
+                        handleGetStarted();
+                        setIsMobileMenuOpen(false);
+                      }}
+                      className="py-4 rounded-2xl bg-primary text-white shadow-premium-xl"
+                    >
+                      {t('getStarted') || 'Get Started'}
+                    </button>
+                  </>
+                )}
               </div>
             </motion.div>
           )}
@@ -186,8 +202,7 @@ export default function LandingPage() {
             </motion.div>
 
             <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-black mb-8 tracking-premium leading-[0.9] font-outfit">
-              100% Free <br />
-              <span className="gradient-text">Coding Learning Platform</span>
+              {t('heroTitle')}
             </h1>
 
             <div className="flex items-center gap-4 mb-4">
@@ -195,7 +210,7 @@ export default function LandingPage() {
               <span className="px-3 py-1 font-bold uppercase tracking-widest bg-blue-500/10 text-blue-500 rounded-lg text-xs">English</span>
             </div>
 
-            <p className="text-xl text-muted-foreground mb-8 max-w-xl leading-relaxed font-medium">
+            <p className="text-lg text-muted-foreground mb-8 max-w-xl leading-relaxed font-medium">
               {t('heroSubtitle')}
             </p>
 
@@ -252,6 +267,7 @@ export default function LandingPage() {
                   src="/edtech.png"
                   alt="Become A Skiller Dashboard"
                   fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 800px"
                   className="object-contain p-2 sm:p-4 group-hover:scale-105 transition-transform duration-1000" />
 
               </div>
@@ -319,66 +335,7 @@ export default function LandingPage() {
       </section>
 
       {/* Interactive Course Slider */}
-      {isMounted && (
-        <section className="py-20 overflow-hidden bg-background relative border-y border-border">
-          <div className="max-w-7xl mx-auto px-4 mb-10 flex items-center justify-between">
-            <div>
-              <h2 className="text-sm font-black text-primary uppercase tracking-[0.3em] mb-2">{t('featuredLearning')}</h2>
-              <h3 className="text-3xl font-black font-outfit tracking-premium">{t('topPrograms')}</h3>
-            </div>
-
-            <div className="flex gap-3">
-              <button
-                onClick={() => setCurrentSlide(prev => Math.max(0, prev - 1))}
-                disabled={currentSlide === 0}
-                className="w-12 h-12 rounded-2xl border border-border flex items-center justify-center hover:bg-surface hover:text-primary transition-all disabled:opacity-30 disabled:cursor-not-allowed group shadow-sm bg-background z-10"
-              >
-                <ArrowLeft className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-              </button>
-              <button
-                onClick={() => setCurrentSlide(prev => Math.min(courses.length - itemsPerView, prev + 1))}
-                disabled={currentSlide >= courses.length - itemsPerView}
-                className="w-12 h-12 rounded-2xl border border-border flex items-center justify-center hover:bg-surface hover:text-primary transition-all disabled:opacity-30 disabled:cursor-not-allowed group shadow-sm bg-background z-10"
-              >
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-              </button>
-            </div>
-          </div>
-
-          <div className="max-w-7xl mx-auto px-4 overflow-hidden">
-            <motion.div
-              animate={{ x: `calc(-${currentSlide * (100 / itemsPerView)}% - ${currentSlide * (24 / itemsPerView)}px)` }}
-              transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="flex flex-nowrap gap-6"
-            >
-              {courses.map((course, idx) => (
-                <div
-                  key={idx}
-                  className="min-w-[100%] md:min-w-[calc(50%-12px)] lg:min-w-[calc(33.333%-16px)] h-[240px] rounded-[2.5rem] bg-gradient-to-br p-px relative group overflow-hidden shadow-premium shrink-0"
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${course.color} opacity-90`} />
-                  <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-20" />
-
-                  <div className="relative h-full w-full p-8 flex flex-col justify-between">
-                    <div className="flex justify-between items-start">
-                      <div className="px-4 py-1.5 bg-white/20 backdrop-blur-md rounded-full text-[10px] font-black uppercase tracking-widest text-white border border-white/10">
-                        {course.tag}
-                      </div>
-                      <div className="w-10 h-10 rounded-2xl bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/10 group-hover:bg-white group-hover:text-primary transition-all">
-                        <ArrowRight className="w-5 h-5" />
-                      </div>
-                    </div>
-                    <div>
-                      <p className="text-white/70 text-xs font-black uppercase tracking-widest mb-1">{t('proProgram')}</p>
-                      <h4 className="text-2xl font-black text-white font-outfit tracking-premium">{course.name}</h4>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </motion.div>
-          </div>
-        </section>
-      )}
+      {isMounted && <FeaturedLearning />}
 
       {/* Features Grid */}
       <section id="features" className="py-32 relative px-4 bg-surface/30 border-y border-border overflow-hidden">
@@ -562,7 +519,7 @@ export default function LandingPage() {
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-12 mb-20">
           <div className="col-span-1 md:col-span-2">
             <div className="flex items-center gap-3 mb-8">
-              <Image src="/logo.png" alt="Logo" width={40} height={40} className="object-contain" />
+              <Image src="/logo.png" alt="Logo" width={40} height={40} className="object-contain" style={{ width: 'auto', height: 'auto' }} />
               <div className="flex flex-col leading-none">
                 <span className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Become A</span>
                 <span className="text-2xl font-black text-primary tracking-premium font-outfit">Skiller</span>

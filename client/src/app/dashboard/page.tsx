@@ -1,20 +1,39 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Clock, Award, BookOpen, CheckCircle, TrendingUp, ArrowRight, GraduationCap } from 'lucide-react';
 import DashboardLayout from '@/components/layout/DashboardLayout';
 import { Card } from '@/components/ui/Card';
 import { useAuthStore } from '@/store/authStore';
+import Image from 'next/image';
+import api from '@/lib/axios';
 
 export default function DashboardPage() {
     const { user } = useAuthStore();
+    const [statsData, setStatsData] = useState<any>(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchStats = async () => {
+            try {
+                const response = await api.get('/auth/stats');
+                setStatsData(response.data.data.stats);
+            } catch (error) {
+                console.error('Error fetching dashboard stats:', error);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchStats();
+    }, []);
 
     const stats = [
-        { label: 'Completed Courses', value: '12', icon: CheckCircle, color: 'text-green-500', bg: 'bg-green-500/10' },
-        { label: 'Learning Hours', value: '148h', icon: Clock, color: 'text-blue-500', bg: 'bg-blue-500/10' },
-        { label: 'Certificates', value: '8', icon: Award, color: 'text-purple-500', bg: 'bg-purple-500/10' },
-        { label: 'Active Courses', value: '4', icon: BookOpen, color: 'text-orange-500', bg: 'bg-orange-500/10' },
+        { label: 'Completed Courses', value: statsData?.completedCourses || '0', icon: CheckCircle, color: 'text-green-500', bg: 'bg-green-500/10' },
+        { label: 'Learning Hours', value: statsData?.learningHours || '0h', icon: Clock, color: 'text-blue-500', bg: 'bg-blue-500/10' },
+        { label: 'Certificates', value: statsData?.certificates || '0', icon: Award, color: 'text-purple-500', bg: 'bg-purple-500/10' },
+        { label: 'Active Courses', value: statsData?.activeCourses || '0', icon: BookOpen, color: 'text-orange-500', bg: 'bg-orange-500/10' },
     ];
 
     return (
@@ -52,12 +71,17 @@ export default function DashboardPage() {
                         <h2 className="text-2xl font-bold tracking-tight">In Progress</h2>
                         <Card className="p-0 overflow-hidden group">
                             <div className="relative h-64 w-full">
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent z-10" />
-                                <div className="absolute inset-0 bg-primary/20 group-hover:bg-primary/10 transition-colors z-0" />
+                                <Image
+                                    src="https://images.unsplash.com/photo-1587620962725-abab7fe55159?q=80&w=1000&auto=format&fit=crop"
+                                    alt="Course"
+                                    fill
+                                    className="object-cover"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/90 to-black/20 z-10" />
                                 <div className="absolute bottom-6 left-6 z-20 space-y-2">
-                                    <span className="px-3 py-1 bg-primary text-white text-xs font-bold rounded-full uppercase">Development</span>
-                                    <h3 className="text-3xl font-bold text-white">Advanced Next.js & TypeScript</h3>
-                                    <p className="text-white/70 font-medium">Module 4: Performance Optimization & SEO</p>
+                                    <span className="px-3 py-1 bg-primary text-white text-xs font-bold rounded-full uppercase tracking-widest">Development</span>
+                                    <h3 className="text-2xl md:text-3xl font-black text-white leading-tight">Advanced Next.js & TypeScript</h3>
+                                    <p className="text-white/70 font-bold">Module 4: Performance Optimization & SEO</p>
                                 </div>
                             </div>
                             <div className="p-8 space-y-6">

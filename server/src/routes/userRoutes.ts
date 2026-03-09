@@ -4,6 +4,7 @@ import {
     getUser,
     updateUserRole,
     updateUserStatus,
+    getUserStats,
     deleteUser
 } from '@/controllers/userController';
 import { protect, restrictTo } from '@/middleware/authMiddleware';
@@ -11,8 +12,13 @@ import { UserRole } from '@/models/userModel';
 
 const router = express.Router();
 
-// All routes after this are protected and restricted to admin
+// All routes after this are protected
 router.use(protect);
+
+// User Profile & Stats (Accessible by all logged-in users)
+// User Profile (Accessible by all logged-in users)
+
+// All routes after this are restricted to admin
 router.use(restrictTo(UserRole.ADMIN));
 
 router.get('/', getAllUsers);

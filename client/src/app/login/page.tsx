@@ -48,7 +48,6 @@ export default function LoginPage() {
             const response = await api.post('/auth/github-login', { code });
             const { token, data: { user } } = response.data;
 
-            localStorage.setItem('token', token);
             setToken(token);
             setUser(user);
 
@@ -79,7 +78,6 @@ export default function LoginPage() {
             });
             const { token, data: { user } } = response.data;
 
-            localStorage.setItem('token', token);
             setToken(token);
             setUser(user);
 
@@ -106,7 +104,6 @@ export default function LoginPage() {
             const response = await api.post('/auth/login', data);
             const { token, data: { user } } = response.data;
 
-            localStorage.setItem('token', token);
             setToken(token);
             setUser(user);
 
@@ -140,6 +137,7 @@ export default function LoginPage() {
                                 width={80}
                                 height={80}
                                 className="object-contain group-hover:scale-110 transition-transform duration-500"
+                                style={{ width: 'auto', height: 'auto' }}
                             />
                         </div>
                     </div>
@@ -147,12 +145,12 @@ export default function LoginPage() {
                         <span className="text-xs font-black text-muted-foreground uppercase tracking-[0.3em] mb-1">Become A</span>
                         <h1 className="text-4xl font-black text-primary tracking-premium font-outfit uppercase">Skiller</h1>
                     </div>
-                    <p className="text-muted-foreground font-medium text-lg tracking-tight">
-                        Login to continue your mastery journey.
+                    <p className="text-muted-foreground font-medium text-base md:text-lg tracking-tight">
+                        {t('loginSubtitle') || 'Login to continue your mastery journey.'}
                     </p>
                 </div>
 
-                <div className="bg-background/60 backdrop-blur-xl border border-border shadow-premium-xl rounded-[3rem] p-10 md:p-14 glass">
+                <div className="bg-background/60 backdrop-blur-xl border border-border shadow-premium-xl rounded-[3rem] p-6 sm:p-10 md:p-14 glass">
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                         {error && (
                             <motion.div
@@ -200,7 +198,7 @@ export default function LoginPage() {
                             className="w-full py-4 text-lg font-bold flex items-center justify-center gap-2"
                             isLoading={isLoading}
                         >
-                            Sign In <ArrowRight className="w-5 h-5" />
+                            {t('login')} <ArrowRight className="w-5 h-5" />
                         </Button>
                     </form>
 
@@ -222,7 +220,7 @@ export default function LoginPage() {
                                 <Github className="w-5 h-5" />
                                 <span className="font-semibold text-foreground/80">GitHub</span>
                             </button>
-                            <div className="flex-1">
+                            <div className="flex-1 overflow-hidden">
                                 <GoogleLogin
                                     onSuccess={handleGoogleSuccess}
                                     onError={() => setError('Google Sign-In failed. Please try again.')}
